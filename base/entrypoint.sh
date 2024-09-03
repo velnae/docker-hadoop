@@ -38,6 +38,11 @@ configure /etc/hadoop/httpfs-site.xml httpfs HTTPFS_CONF
 configure /etc/hadoop/kms-site.xml kms KMS_CONF
 configure /etc/hadoop/mapred-site.xml mapred MAPRED_CONF
 
+# Configurar parámetros críticos para HDFS
+addProperty /etc/hadoop/hdfs-site.xml dfs.namenode.safemode.threshold-pct 0.9
+addProperty /etc/hadoop/hdfs-site.xml dfs.namenode.safemode.min.datanodes 1
+addProperty /etc/hadoop/hdfs-site.xml dfs.namenode.safemode.extension 5000
+
 if [ "$MULTIHOMED_NETWORK" = "1" ]; then
     echo "Configuring for multihomed network"
 
@@ -78,39 +83,39 @@ if [ -n "$GANGLIA_HOST" ]; then
     done > /etc/hadoop/hadoop-metrics2.properties
 fi
 
-function wait_for_it()
-{
-    local serviceport=$1
-    local service=${serviceport%%:*}
-    local port=${serviceport#*:}
-    local retry_seconds=5
-    local max_try=100
-    let i=1
-
-    nc -z $service $port
-    result=$?
-
-    until [ $result -eq 0 ]; do
-      echo "[$i/$max_try] check for ${service}:${port}..."
-      echo "[$i/$max_try] ${service}:${port} is not available yet"
-      if (( $i == $max_try )); then
-        echo "[$i/$max_try] ${service}:${port} is still not available; giving up after ${max_try} tries. :/"
-        exit 1
-      fi
-      
-      echo "[$i/$max_try] try in ${retry_seconds}s once again ..."
-      let "i++"
-      sleep $retry_seconds
+  function wait_for_it()
+  {
+      local serviceport=$1
+      local service=${serviceport%%:*}
+      local port=${serviceport#*:}
+      local retry_seconds=5
+      local max_try=100
+      let i=1
 
       nc -z $service $port
-      result=$?
-    done
-    echo "[$i/$max_try] $service:${port} is available."
-}
+        result=$?
 
-for i in ${SERVICE_PRECONDITION[@]}
-do
-    wait_for_it ${i}
-done
+      until [ $result -eq 0 ]; do
+        echo "[$i/$max_try] check for ${service}:${port}..."
+        echo "[$i/$max_try] ${service}:${port} is not available yet"
+        if (( $i == $max_try )); then
+            echo "[$i/$max_try] ${service}:${port} is still not available; giving up after ${max_try} tries. :/"
+          exit 1
+        fi
+
+        echo "[$i/$max_try] try in ${retry_seconds}s once again ..."
+        let "i++"
+        sleep $retry_seconds
+
+        nc -z $service $port
+        result=$?
+      done
+      echo "[$i/$max_try] $service:${port} is available."
+  }
+
+  for i in ${SERVICE_PRECONDITION[@]}
+  do
+      wait_for_it ${i}
+  done
 
 exec $@
