@@ -23,7 +23,7 @@ Run example wordcount job:
 
 Or deploy in swarm:
 ```
-docker stack deploy -c docker-compose-v3.yml hadoop
+docker stack deploy -c docker-compose-v3.yml hadoop             
 ```
 
 `docker-compose` creates a docker network that can be found by running `docker network list`, e.g. `dockerhadoop_default`.
