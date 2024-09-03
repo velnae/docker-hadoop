@@ -2,6 +2,13 @@
 
 # Changes
 
+Updated to Debian 12 image base  
+Updated to Apache hadoop 3.4.0 - 2024 version  
+Updated to JDK 11 - minimal version Apache hadoop 3.4 supported  
+Add versatility of version names for docker       
+Add makefile commands to start easily      
+[Docker Hub velnae28](https://hub.docker.com/r/velnae28/hadoop-namenode)  
+
 Version 2.0.0 introduces uses wait_for_it script for the cluster startup
 
 # Hadoop Docker
@@ -13,10 +20,11 @@ See repository branches for supported hadoop versions
 
 To deploy an example HDFS cluster, run:
 ```
-  docker-compose up
+  make up
+  make run
 ```
 
-Run example wordcount job:
+Run example wordcount job:  
 ```
   make wordcount
 ```
@@ -26,7 +34,7 @@ Or deploy in swarm:
 docker stack deploy -c docker-compose-v3.yml hadoop             
 ```
 
-`docker-compose` creates a docker network that can be found by running `docker network list`, e.g. `dockerhadoop_default`.
+`docker compose` creates a docker network that can be found by running `docker network list`, e.g. `docker-hadoop`.
 
 Run `docker network inspect` on the network (e.g. `dockerhadoop_default`) to find the IP the hadoop interfaces are published on. Access these interfaces with the following URLs:
 
