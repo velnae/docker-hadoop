@@ -38,6 +38,7 @@ RUN ln -s /opt/hadoop-$HADOOP_VERSION/etc/hadoop /etc/hadoop \
     && mkdir /hadoop-data
 
 ENV HADOOP_HOME=/opt/hadoop-$HADOOP_VERSION
+ENV HADOOP_MAPRED_HOME=${HADOOP_HOME}
 ENV HADOOP_CONF_DIR=/etc/hadoop
 ENV MULTIHOMED_NETWORK=1
 ENV USER=root

@@ -1,6 +1,7 @@
-FROM bde2020/hadoop-base:2.0.0-hadoop3.2.1-java8
+FROM velnae28/hadoop-base:1.0-hadoop3.4-java11
 
-MAINTAINER Ivan Ermilov <ivan.s.ermilov@gmail.com>
+LABEL authors.contact01="Emerson NV <velnae.28@gmail.com" \
+authors.contact02="Ivan Ermilov <ivan.s.ermilov@gmail.com"
 
 HEALTHCHECK CMD curl -f http://localhost:8042/ || exit 1
 
