@@ -38,10 +38,6 @@ configure /etc/hadoop/httpfs-site.xml httpfs HTTPFS_CONF
 configure /etc/hadoop/kms-site.xml kms KMS_CONF
 configure /etc/hadoop/mapred-site.xml mapred MAPRED_CONF
 
-# Configurar parámetros críticos para HDFS
-addProperty /etc/hadoop/hdfs-site.xml dfs.namenode.safemode.threshold-pct 0.9
-addProperty /etc/hadoop/hdfs-site.xml dfs.namenode.safemode.min.datanodes 1
-addProperty /etc/hadoop/hdfs-site.xml dfs.namenode.safemode.extension 5000
 
 if [ "$MULTIHOMED_NETWORK" = "1" ]; then
     echo "Configuring for multihomed network"
