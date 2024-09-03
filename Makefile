@@ -27,7 +27,7 @@ run:
 	@echo 'Running docker-hadoop'
 
 stop:
-	docker compose down
+	docker compose stop
 	@echo 'Stopping docker-hadoop'
 
 down:
